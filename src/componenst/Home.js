@@ -72,19 +72,19 @@ const Home = () => {
                 </div>
 
                 <div className=" position-relative">
-                <form className="text-center" onSubmit={handleSearch}>
-                    <input type="text" value={search} onChange={e => setSearch(e.target.value)} />
-                    <button className="btn btn-success p-1 mx-2" type="submit">search</button>
-                </form>
-                <button onClick={againApi} className="btn p-1 crossBtn"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <form className="text-center" onSubmit={handleSearch}>
+                        <input type="text" value={search} onChange={e => setSearch(e.target.value)} />
+                        <button className="btn btn-success p-1 mx-2" type="submit">search</button>
+                    </form>
+                    {
+                        search.length !== 0 ? <button onClick={againApi} className="btn p-1 crossBtn"><i className="fa fa-times" aria-hidden="true"></i></button> : ''
+                    }
                 </div>
-                
-                
+
                 <div className="card-body">
                     <div className="divbtn mb-3 d-flex justify-content-end ">
-                        <Link to="/CreatNew" className="btn btn-success">Add New (+)</Link>
+                        <Link to="/CreatNew" className="btn btn-success">Add New <i className="fa fa-plus-square" aria-hidden="true"></i></Link>
                     </div>
-
                     <div className="table-responsive">
                         <table className="table table-bordered">
                             <thead className="bg-dark text-white">
@@ -96,10 +96,10 @@ const Home = () => {
                                     <td>Phone</td>
                                     <td className="text-center">Action</td>
                                     <td>Active</td>
+                                    <td>status</td>
                                 </tr>
                             </thead>
                             <tbody>
-
                                 {employeData &&
                                     employeData.map((item, epId) => (
                                         <tr key={epId}>
@@ -114,8 +114,9 @@ const Home = () => {
                                                 <button onClick={() => Removefunction(item.id)} className="btn btn-danger mx-2"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
                                             <td>{item.active ? 'Online' : "Offline"}</td>
-                                            
-                                         
+                                            <td><div className="form-check form-switch">
+                                                <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"/>
+                                            </div></td>
                                         </tr>
                                     ))
                                 }

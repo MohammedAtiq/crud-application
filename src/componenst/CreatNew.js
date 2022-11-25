@@ -5,7 +5,6 @@ const CreatNew = () => {
 
     const navigation = useNavigate()
 
-
     const [name, namechange] = useState("");
     const [email, emailchange] = useState("");
     const [phone, phonechange] = useState("");
@@ -38,8 +37,6 @@ const CreatNew = () => {
 
 
     const [employeData, setEmployeData] = useState([])
-    console.log(employeData)
-
 
     const getData = async () => {
         try {
@@ -52,6 +49,9 @@ const CreatNew = () => {
         }
     }
 
+    // const listRepos = employeData.map(item => item.email)
+    // console.log("listRepos=>", listRepos)
+
     useEffect(() => {
         getData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,22 +60,31 @@ const CreatNew = () => {
 
     const handlesubmit = (e) => {
         e.preventDefault();
-
         const saveUser = async () => {
             const val = { name, email, phone, active, validation, upimages, role, age }
             console.log(val)
 
-            try {
-                await fetch('http://localhost:8000/employee', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(val)
-                });
-                navigation("/")
-            } catch (error) {
-                console.log("error=>", error)
+            if (employeData && employeData.length) {
+                const userEmail = employeData.filter(el => el.email === email)
+                const userName = employeData.filter(el => el.name === name)
+                if (userEmail.length === 0 && userName.length === 0) {
+                    try {
+                        await fetch('http://localhost:8000/employee', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(val)
+                        });
+                        navigation("/")
+                    } catch (error) {
+                        console.log("error=>", error)
+                    }
+                } else if (userName.length !== 0) {
+                    alert("Name Already Present")
+                } else if (userEmail.length !== 0) {
+                    alert("Email Already Present")
+                }
             }
         }
         saveUser()
@@ -161,20 +170,11 @@ const CreatNew = () => {
                                         <Link to="/" className="btn btn-danger">Back</Link>
                                     </div>
                                 </div>
-
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </form>
-
-
             </div>
-
-
         </div>
     )
 }
