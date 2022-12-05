@@ -2,6 +2,26 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Home = () => {
+    // const [check, setCheck] = useState(true)
+    const [employeData, setEmployeData] = useState([])
+    const handleCheck = (id) => {
+        let employeDataOri = [...employeData];
+        let index = employeDataOri.findIndex(item => item.id === id);
+        // console.log(index)
+        if (index !== -1) {
+            employeDataOri[index].active = !employeDataOri[index].active;
+        }
+        console.log(employeDataOri[index].active)
+        setEmployeData(employeDataOri);
+
+        if (employeDataOri[index].active === true) {
+            alert(employeDataOri[index].name + ' is active')
+        }
+
+        // setCheck(!check)
+    }
+    // console.log("check", check)
+
     const navigate = useNavigate()
     const LoadDetail = (id) => {
         navigate(`/Detail/${id}`)
@@ -28,7 +48,7 @@ const Home = () => {
         }
     }
 
-    const [employeData, setEmployeData] = useState([])
+
     const [search, setSearch] = useState('')
     const getData = async () => {
         try {
@@ -113,10 +133,11 @@ const Home = () => {
                                                 <button onClick={() => LoadEdit(item.id)} className="btn btn-success mx-2"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                                 <button onClick={() => Removefunction(item.id)} className="btn btn-danger mx-2"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
-                                            <td>{item.active ? 'Online' : "Offline"}</td>
-                                            <td><div className="form-check form-switch">
-                                                <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"/>
-                                            </div></td>
+                                            <td>{item.active ? <p class="text-decoration-underline text-primary">Online</p> : <p class="text-decoration-line-through text-danger">Ofline</p>}</td>
+                                            <td ><div className="form-check form-switch">
+                                                <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value={item.active} onClick={() => handleCheck(item.id)} />
+                                            </div>
+                                            </td>
                                         </tr>
                                     ))
                                 }
